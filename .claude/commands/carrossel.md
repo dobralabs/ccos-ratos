@@ -15,7 +15,7 @@ description: >
 - **Identidade visual:** `marca/design-guide.md` — LER ANTES de criar qualquer HTML
 - **Contexto do negócio:** `_contexto/empresa.md`
 - **Tom de voz:** `_contexto/preferencias.md`
-- **Playwright CLI:** `npx playwright screenshot` para renderizar HTMLs em PNG (instalado globalmente, não depende de MCP)
+- **Playwright CLI:** `npx playwright screenshot` para renderizar HTMLs em PNG. Se nunca usou, rodar uma vez: `npx playwright install chromium`
 
 ## Input
 
