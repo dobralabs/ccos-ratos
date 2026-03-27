@@ -257,7 +257,7 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 
 ## Fluxo de trabalho
 
-Antes de executar qualquer tarefa, verificar se existe uma skill relevante em `.claude/commands/`.
+Antes de executar qualquer tarefa, verificar se existe uma skill relevante em `.claude/skills/` ou `.claude/commands/`.
 Se encontrar, seguir as instruções da skill.
 Se não encontrar, executar a tarefa normalmente.
 
