@@ -1,0 +1,15 @@
+name = "comentario-dm-SLUG"
+account_id = "CLOUDFLARE_ACCOUNT_ID"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+[vars]
+INSTAGRAM_ACCOUNT_ID = "INSTAGRAM_ACCOUNT_ID"
+
+# Secrets (configurados via `wrangler secret put`):
+# INSTAGRAM_ACCESS_TOKEN
+# INSTAGRAM_WEBHOOK_VERIFY_TOKEN
+
+[[kv_namespaces]]
+binding = "AUTOMATIONS"
+id = "KV_NAMESPACE_ID"

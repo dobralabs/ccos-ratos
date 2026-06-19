@@ -1,0 +1,15 @@
+# Tokens e credenciais
+.env
+*.env
+
+# Cloudflare Worker
+worker/wrangler.toml
+worker/node_modules/
+worker/.wrangler/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

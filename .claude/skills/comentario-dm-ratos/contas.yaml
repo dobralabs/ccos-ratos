@@ -1,0 +1,24 @@
+# ============================================================================
+# Comentario DM Ratos — Cadastro de Contas Instagram
+# ============================================================================
+#
+# Preencha este arquivo com as contas do Instagram que usam a automacao.
+# O Claude consulta este arquivo automaticamente quando tu mencionares
+# o nome da conta (ex: "cria automacao pro @meuinsta").
+#
+# O setup guiado preenche isso automaticamente. Mas podes editar na mao.
+#
+# ============================================================================
+
+contas:
+
+  # -- Exemplo (descomente e edite) --
+  #
+  # meu-insta:
+  #   nome: "Meu Instagram"
+  #   instagram_account_id: "17841..."
+  #   instagram_username: "@meuinsta"
+  #   worker_url: "https://comentario-dm-xxx.workers.dev"
+  #   notas: ""
+
+  # -- Tuas contas abaixo --
