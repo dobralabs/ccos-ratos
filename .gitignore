@@ -1,0 +1,46 @@
+# Variáveis de ambiente (API keys, tokens — NUNCA commitar)
+.env
+.env.local
+.env.*
+
+# Arquivo gerado pelo /setup com MCPs específicos do usuário
+_configurar-mcps.md
+
+# Outputs de renderização (binários pesados)
+*.png
+
+# Arquivos de dados do usuário (CSVs, planilhas, etc)
+dados/*.csv
+dados/*.xlsx
+dados/*.xls
+dados/*.txt
+dados/*.pdf
+dados/*.json
+!dados/README.md
+
+# Pastas de trabalho do usuário (geradas pelo /setup, conteúdo pessoal)
+clientes/
+propostas/
+conteudo/
+projetos/
+briefings/
+trabalho/
+estudos/
+publicacoes/
+anotacoes/
+curriculo/
+tarefas.md
+
+# Skills instaladas pelo usuário (específicas do negócio dele).
+# O kit distribuído NÃO leva skill nenhuma aqui — só templates em templates/skills/.
+# .claude/commands/ e .claude/settings.json continuam versionados (são do kit).
+.claude/skills/
+
+# Arquivos gerados pelo uso/registro das skills (conteúdo pessoal, nunca no kit)
+automacoes-dm.md
+prioridades.md
+contas.yaml
+
+# Sistema
+.DS_Store
+node_modules/
