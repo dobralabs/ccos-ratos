@@ -181,7 +181,17 @@ Se a skill precisar de arquivos de apoio (templates HTML, referências de design
   referencia.md         ← material de referência (se aplicável)
 ```
 
-Depois de criar, confirmar:
+Depois de criar, **sincronizar a ponte pro Codex enxergar a skill nova** (no Mac/Linux é symlink e não
+precisa; no Windows a ponte é cópia e precisa re-sincronizar). Rodar o script — é idempotente:
+
+```bash
+bash scripts/sync-ponte.sh        # Mac/Linux ou Git Bash
+```
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1   # Windows
+```
+
+Depois, confirmar:
 
 > "Pronto, a skill `/[nome]` tá instalada. Você pode rodar ela agora se quiser testar, ou a gente segue pro próximo processo."
 

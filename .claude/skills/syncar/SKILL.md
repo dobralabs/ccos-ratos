@@ -46,7 +46,7 @@ git push -u origin main
 Confirme:
 
 > "Conectado. Seu workspace está agora em [link].
-> A partir de agora, o sistema vai sincronizar automaticamente quando você terminar de trabalhar."
+> Sempre que quiser salvar, é só me pedir 'synca' (ou rodar /syncar) que eu faço o commit e o push."
 
 ---
 

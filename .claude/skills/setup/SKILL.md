@@ -2,13 +2,43 @@
 name: setup
 description: >
   Configura o Claude Code OS pro seu negócio. Faz perguntas sobre quem você é,
-  o que faz e como trabalha, e gera CLAUDE.md, memória, estrutura de pastas e
+  o que faz e como trabalha, e gera AGENTS.md, memória, estrutura de pastas e
   lista de MCPs personalizados pro seu perfil.
   Use quando o usuário chamar /setup, quando _contexto/empresa.md estiver vazio
   ou ausente, ou quando disser "configurar o sistema", "primeira vez", "setup".
 ---
 
 # /setup — Configuração do Sistema
+
+## Passo 0 — Ambiente (silencioso, antes de tudo)
+
+Este kit serve Claude Code e Codex. Antes das perguntas, garantir que os dois enxergam as skills.
+Fazer isso sem alardear pro usuário — é setup técnico. Só reportar no fim se algo falhar.
+
+**Criar a ponte `.agents/skills` (pro Codex), apontando pra `.claude/skills`.** Sempre criar,
+independente de qual agente está rodando agora — o aluno pode abrir no outro amanhã. Rodar o
+script de sincronização, que já resolve symlink (Mac/Linux) ou junction/cópia (Windows):
+
+```bash
+# Mac / Linux (ou Git Bash no Windows)
+bash scripts/sync-ponte.sh
+```
+```powershell
+# Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1
+```
+
+Detectar o SO pelo ambiente (`uname` responde no Mac/Linux; no Windows use o `.ps1`). O script é
+idempotente: no Mac/Linux cria um symlink (que reflete `.claude/skills` sozinho pra sempre); no
+Windows cria junction, e se não der, cópia. Quando a ponte é cópia, skill nova precisa re-sincronizar
+— o `/mapear` e o `/atualizar` rodam esse mesmo script no fim.
+
+**Validar (opcional, se der):** no Codex, `codex debug prompt-input` mostra a tabela de skill roots;
+se `.claude/skills` aparecer lá, a ponte funcionou. No Claude Code as skills já aparecem no `/`.
+
+Feito isso, seguir pra verificação inicial.
+
+---
 
 ## Verificação inicial
 
@@ -216,9 +246,12 @@ Com todas as respostas, detecte o perfil principal:
 
 ## O que gerar
 
-### 1. Atualizar `CLAUDE.md` na raiz
+### 1. Atualizar `AGENTS.md` na raiz
 
-Substitua o conteúdo placeholder pelo CLAUDE.md real do usuário:
+O `AGENTS.md` é a fonte das instruções (Claude Code lê via `CLAUDE.md → @AGENTS.md`; Codex lê direto).
+Substitua o conteúdo placeholder pelo `AGENTS.md` real do usuário. **Não** criar/editar `CLAUDE.md`:
+ele tem que continuar com uma linha só (`@AGENTS.md`). Se por acaso o `CLAUDE.md` estiver diferente
+disso, corrigir pra `@AGENTS.md`.
 
 ```markdown
 # [Nome do Negócio] — Claude Code OS
@@ -248,6 +281,13 @@ Substitua o conteúdo placeholder pelo CLAUDE.md real do usuário:
 
 ---
 
+## Como este workspace é organizado (Claude Code e Codex)
+
+- **Instruções:** `AGENTS.md` é a fonte (este arquivo). `CLAUDE.md` tem só `@AGENTS.md`. Nunca escrever conteúdo no `CLAUDE.md`.
+- **Skills:** em `.claude/skills/<nome>/SKILL.md`. Pro Codex enxergar, existe `.agents/skills` apontando pra `.claude/skills` (criado pelo `/setup`, não vai pro git). No Windows a ponte é cópia: skill nova precisa de `/atualizar` pra re-sincronizar.
+
+---
+
 ## Contexto do negócio
 
 No início de toda conversa, ler os seguintes arquivos (se existirem e estiverem configurados):
@@ -255,6 +295,7 @@ No início de toda conversa, ler os seguintes arquivos (se existirem e estiverem
 1. `_contexto/empresa.md` — quem é o usuário, o que faz, como funciona o negócio
 2. `_contexto/preferencias.md` — tom de voz, estilo de escrita, o que evitar
 3. `_contexto/estrategia.md` — foco atual, prioridades, o que pode esperar
+4. `_contexto/agora.md` — contexto vivo: onde paramos, decisões recentes, pendências (atualizado a cada sessão)
 
 Usar essas informações como base pra qualquer resposta ou decisão. Ao sugerir prioridades, formatos ou abordagens, considerar o foco atual descrito em `estrategia.md`.
 
@@ -266,7 +307,7 @@ Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o
 
 ## Fluxo de trabalho
 
-Antes de executar qualquer tarefa, verificar se existe uma skill relevante em `.claude/skills/` ou `.claude/commands/`.
+Antes de executar qualquer tarefa, verificar se existe uma skill relevante em `.claude/skills/` (Claude Code) ou `.agents/skills/` (Codex).
 Se encontrar, seguir as instruções da skill.
 Se não encontrar, executar a tarefa normalmente.
 
@@ -289,7 +330,7 @@ Se sim, identificar onde faz mais sentido salvar:
 - **Sobre o negócio** (quem são os clientes, como funciona a empresa, serviços, mercado) → adicionar em `_contexto/empresa.md`
 - **Sobre preferências e estilo** (tom de voz, formato de resposta, o que evitar, como estruturar textos) → adicionar em `_contexto/preferencias.md`
 - **Sobre prioridades e foco atual** (projetos em andamento, metas do momento, prazos importantes, o que é prioridade agora) → adicionar em `_contexto/estrategia.md`
-- **Regra de comportamento nessa pasta** (onde salvar arquivos, como nomear, fluxos específicos) → adicionar no próprio `CLAUDE.md`
+- **Regra de comportamento nessa pasta** (onde salvar arquivos, como nomear, fluxos específicos) → adicionar no próprio `AGENTS.md`
 
 Salvar com uma linha nova clara, sem reformatar o arquivo inteiro. Confirmar o que foi salvo mostrando a linha adicionada.
 
@@ -308,7 +349,7 @@ Se sim, identificar o que precisa atualizar:
 - **Novo cliente, serviço, ferramenta, equipe** → `_contexto/empresa.md`
 - **Mudança de prioridade ou foco** → `_contexto/estrategia.md`
 - **Correção de tom ou estilo** → `_contexto/preferencias.md`
-- **Nova pasta, regra de organização, skill criada** → `CLAUDE.md`
+- **Nova pasta, regra de organização, skill criada** → `AGENTS.md`
 - **Mudança visual (cores, fontes, logo)** → `marca/design-guide.md`
 
 Mostrar o que vai mudar antes de salvar. Não reformatar o arquivo inteiro, só adicionar ou editar a linha relevante.
@@ -391,6 +432,32 @@ Quando o usuário pedir pra criar uma nova skill:
 ## Preferências adicionais
 [qualquer outra preferência mencionada]
 ```
+
+### 4.5. Semear `_contexto/agora.md`
+
+O `agora.md` é o contexto vivo que o `/iniciar` lê no começo de cada sessão. No template ele vem com `<!-- NOT CONFIGURED -->` e placeholders. Substitua pelo estado inicial abaixo, pra que o **primeiro** `/iniciar` já mostre "onde paramos" (sem isso, o aluno recém-instalado abre a próxima sessão e não vê nada, parecendo que o setup falhou). Remova o marcador `<!-- NOT CONFIGURED -->` e os placeholders `[...]`, deixando assim:
+
+```markdown
+# Agora — contexto vivo
+
+> Este é o contexto que muda toda semana (diferente de `estrategia.md`, que é o foco de fundo).
+> O `/iniciar` lê isto no começo da sessão; o `/atualizar` escreve aqui no fim.
+> Mantenha curto: o que passou de ~30 dias sai daqui (vai pro histórico ou some).
+
+## Onde paramos
+Acabei de configurar o sistema pro meu negócio com o /setup. Próximo passo sugerido: rodar /mapear pra criar skills pro meu dia a dia.
+
+## Decisões recentes
+[vazio por enquanto — o /atualizar preenche no fim de cada sessão]
+
+## Pendências
+- Rodar /mapear pra criar as primeiras skills personalizadas.
+
+## Quente agora
+[o que estiver ativo esta semana]
+```
+
+Não invente conteúdo além disso: o `agora.md` é preenchido de verdade pelo uso, via `/atualizar`.
 
 ### 5. Pré-preencher `marca/design-guide.md`
 
@@ -514,7 +581,7 @@ Após gerar todos os arquivos, envie uma mensagem de encerramento:
 > "[Nome], seu sistema tá configurado.
 >
 > Aqui está o que foi criado:
-> - CLAUDE.md — o Claude agora sabe quem você é, como trabalha e onde fica cada coisa
+> - AGENTS.md — o agente agora sabe quem você é, como trabalha e onde fica cada coisa
 > - _contexto/ — negócio, preferências e foco atual salvos
 > - marca/design-guide.md — identidade visual [preenchida / pronta pra preencher]
 > - Estrutura de pastas pro seu perfil de [perfil detectado]
@@ -524,7 +591,7 @@ Após gerar todos os arquivos, envie uma mensagem de encerramento:
 >
 > 1. Se você tiver chaves de API (como a da Anthropic), guarde sempre num arquivo chamado `.env` — ele já está protegido e nunca vai ser enviado pro GitHub por engano.
 >
-> 2. Para não perder seu trabalho, conecte esse workspace ao GitHub rodando `/syncar`. Leva 2 minutos e depois o sistema salva automaticamente.
+> 2. Para não perder seu trabalho, conecte esse workspace ao GitHub rodando `/syncar`. Leva 2 minutos. Depois, sempre que quiser salvar, é só pedir "synca" (ou rodar `/syncar`).
 >
 > **Próximo passo:** rode `/mapear` pra eu entender seus processos do dia a dia e criar skills personalizadas pra você."
 

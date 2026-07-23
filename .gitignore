@@ -31,10 +31,18 @@ anotacoes/
 curriculo/
 tarefas.md
 
-# Skills instaladas pelo usuário (específicas do negócio dele).
-# O kit distribuído NÃO leva skill nenhuma aqui — só templates em templates/skills/.
-# .claude/commands/ e .claude/settings.json continuam versionados (são do kit).
-.claude/skills/
+# Skills: as 6 do kit vêm versionadas; as que o aluno cria com /mapear ficam locais.
+.claude/skills/*
+!.claude/skills/setup/
+!.claude/skills/iniciar/
+!.claude/skills/syncar/
+!.claude/skills/mapear/
+!.claude/skills/novo-projeto/
+!.claude/skills/atualizar/
+
+# Ponte pro Codex enxergar as skills — criada pelo /setup em CADA máquina
+# (symlink no Mac/Linux, cópia no Windows). Nunca vai pro git.
+.agents/
 
 # Arquivos gerados pelo uso/registro das skills (conteúdo pessoal, nunca no kit)
 automacoes-dm.md

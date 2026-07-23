@@ -3,7 +3,7 @@
 Skills externas prontas pra instalar. Use como referencia ao criar skills novas com `/mapear` ou instale diretamente as que fizerem sentido pro seu negocio.
 
 > Skills globais ficam em `~/.claude/skills/` e funcionam em qualquer projeto.
-> Skills locais ficam em `.claude/commands/` e so funcionam nesse projeto.
+> Skills locais ficam em `.claude/skills/` e so funcionam nesse projeto.
 
 ---
 

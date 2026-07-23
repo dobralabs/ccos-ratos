@@ -133,7 +133,7 @@ O usuário fornece:
    - **Links do X/Twitter (x.com ou twitter.com):** substituir o domínio por `api.fxtwitter.com` e usar WebFetch (ex: `https://x.com/user/status/123` vira `https://api.fxtwitter.com/user/status/123`). Funciona também pra `x.com/i/status/ID`. Retorna texto, mídia e links do tweet sem precisar de login
    - **Links do Instagram:** WebFetch não funciona. Avisar o usuário pra copiar o texto do post e colar direto
    - **Links de YouTube:** se tiver a skill `/yt-transcript` ou `/transcribe`, usar. Se não, tentar WebFetch na página
-4. **Se o usuário mencionar algo que tu não conhece ou não tem certeza do que é** (nome de produto, ferramenta, evento, pessoa, termo técnico): pesquisar antes de escrever. Usar WebSearch, WebFetch ou qualquer ferramenta disponível. Nunca chutar, corrigir o usuário ou assumir que ele errou. Se ele disse "OpenClaw", vai atrás pra descobrir o que é OpenClaw. O usuário sabe do que tá falando, tu é que pode não saber
+4. **Se o usuário mencionar algo que tu não conhece ou não tem certeza do que é** (nome de produto, ferramenta, evento, pessoa, termo técnico): pesquisar antes de escrever. Usar WebSearch, WebFetch ou qualquer ferramenta disponível. Nunca chutar, corrigir o usuário ou assumir que ele errou. Se ele citou uma ferramenta ou termo que tu não conhece, vai atrás pra descobrir o que é. O usuário sabe do que tá falando, tu é que pode não saber
 5. Definir o ângulo do carrossel: educacional, oportunidade, contrário, provocativo ou inspiracional
 
 5. **Briefing rápido** — perguntar ao usuário (numa mensagem só):

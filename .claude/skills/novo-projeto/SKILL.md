@@ -1,8 +1,8 @@
 ---
 name: novo-projeto
 description: >
-  Cria uma nova pasta de projeto com CLAUDE.md personalizado. Entrevista o usuário
-  sobre o projeto, gera a estrutura e referencia no CLAUDE.md principal.
+  Cria uma nova pasta de projeto com AGENTS.md personalizado (+ CLAUDE.md ponteiro). Entrevista o usuário
+  sobre o projeto, gera a estrutura e referencia no AGENTS.md principal.
   Use quando o usuário chamar /novo-projeto, disser "novo cliente", "novo projeto",
   "criar pasta pro cliente X", "vou começar um projeto novo", ou quando precisar
   organizar um trabalho novo em pasta separada.
@@ -10,7 +10,7 @@ description: >
 
 # /novo-projeto — Criar novo projeto com contexto
 
-Cria uma pasta de projeto com CLAUDE.md dedicado, entrevistando o usuário sobre o que é o projeto.
+Cria uma pasta de projeto com AGENTS.md dedicado (+ CLAUDE.md ponteiro), entrevistando o usuário sobre o que é o projeto.
 
 ## Quando usar
 
@@ -48,7 +48,7 @@ Sugerir o local baseado no tipo de projeto e na estrutura atual:
 - **Conteúdo** → `conteudo/nome-do-projeto/`
 - **Interno** → `projetos/nome-do-projeto/`
 
-Verificar a estrutura de pastas que já existe (ler CLAUDE.md principal) pra manter consistência.
+Verificar a estrutura de pastas que já existe (ler AGENTS.md principal) pra manter consistência.
 
 Apresentar a sugestão:
 
@@ -56,9 +56,16 @@ Apresentar a sugestão:
 
 Aguardar confirmação.
 
-### Passo 3: Criar a pasta e o CLAUDE.md
+### Passo 3: Criar a pasta e o AGENTS.md do projeto
 
-Criar a pasta e gerar o CLAUDE.md do projeto:
+Pra funcionar no Claude Code e no Codex, cada projeto segue o mesmo padrão da raiz:
+o conteúdo vai num `AGENTS.md`, e um `CLAUDE.md` com uma linha só (`@AGENTS.md`) aponta pra ele.
+
+1. Criar a pasta do projeto.
+2. Gerar `<pasta>/AGENTS.md` com o conteúdo abaixo.
+3. Gerar `<pasta>/CLAUDE.md` com exatamente uma linha: `@AGENTS.md`.
+
+Conteúdo do `AGENTS.md`:
 
 ```markdown
 # [Nome do Projeto]
@@ -93,17 +100,17 @@ Se for **cliente**, adicionar também:
 - [ ] [entrega 2]
 ```
 
-### Passo 4: Atualizar o CLAUDE.md principal
+### Passo 4: Atualizar o AGENTS.md principal
 
-Ler o CLAUDE.md da raiz do workspace. Encontrar a seção de **estrutura de pastas** e adicionar a nova pasta.
+Ler o AGENTS.md da raiz do workspace. Encontrar a seção de **estrutura de pastas** e adicionar a nova pasta.
 
 Exemplo:
 
-> Adicionei `clientes/fabio-haag/` na estrutura de pastas do CLAUDE.md principal.
+> Adicionei `clientes/fabio-haag/` na estrutura de pastas do AGENTS.md principal.
 
 Se a seção de estrutura não existir ou não fizer sentido editar, pular e informar:
 
-> "Criei a pasta e o CLAUDE.md do projeto. Se quiser, adiciona na estrutura de pastas do CLAUDE.md principal depois."
+> "Criei a pasta e o AGENTS.md do projeto. Se quiser, adiciona na estrutura de pastas do AGENTS.md principal depois."
 
 ### Passo 5: Atualizar contexto (se aplicável)
 
@@ -121,17 +128,17 @@ Mostrar o resumo:
 Projeto criado!
 
 Pasta: clientes/fabio-haag/
-CLAUDE.md: clientes/fabio-haag/CLAUDE.md
-Referência: adicionado na estrutura de pastas do CLAUDE.md principal
+AGENTS.md: clientes/fabio-haag/AGENTS.md (+ CLAUDE.md apontando pra ele)
+Referência: adicionado na estrutura de pastas do AGENTS.md principal
 
-Pra trabalhar nesse projeto, é só falar. O Claude já vai ler o contexto da pasta.
+Pra trabalhar nesse projeto, é só falar. O agente já vai ler o contexto da pasta.
 ```
 
 ## Regras
 
 - Tom direto, sem cerimônia
 - Não criar subpastas dentro do projeto a menos que o usuário peça
-- O CLAUDE.md do projeto deve ser curto (menos de 30 linhas no início). Vai crescer com o uso
+- O AGENTS.md do projeto deve ser curto (menos de 30 linhas no início). Vai crescer com o uso
 - Nunca mover pastas existentes sem perguntar
-- Se o usuário já criou a pasta manualmente, só gerar o CLAUDE.md dentro dela
+- Se o usuário já criou a pasta manualmente, só gerar o AGENTS.md (+ CLAUDE.md ponteiro) dentro dela
 - Respeitar a estrutura de pastas que o `/setup` criou pra aquele perfil
