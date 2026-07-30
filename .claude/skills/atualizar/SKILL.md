@@ -18,13 +18,14 @@ Fazer uma varredura comparando o **estado real do projeto** com o que está **do
 ## Passo 0: Sincronizar a ponte de skills (rápido, silencioso)
 
 Garantir que o Codex enxerga as skills que existem hoje. Rodar o script (idempotente — no Mac/Linux
-é symlink e vira no-op; no Windows-cópia re-sincroniza skills novas):
+é symlink e vira no-op; no Windows-junction também vira no-op; só re-sincroniza de fato se caiu
+pra cópia):
 
 ```bash
-bash scripts/sync-ponte.sh        # Mac/Linux ou Git Bash
+bash scripts/sync-ponte.sh        # Mac/Linux — nunca no Windows, mesmo em Git Bash
 ```
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1   # Windows
+powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1   # Windows — sempre este
 ```
 
 Não precisa reportar isso ao usuário, só rodar.

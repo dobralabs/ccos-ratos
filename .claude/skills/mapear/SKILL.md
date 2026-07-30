@@ -181,14 +181,14 @@ Se a skill precisar de arquivos de apoio (templates HTML, referências de design
   referencia.md         ← material de referência (se aplicável)
 ```
 
-Depois de criar, **sincronizar a ponte pro Codex enxergar a skill nova** (no Mac/Linux é symlink e não
-precisa; no Windows a ponte é cópia e precisa re-sincronizar). Rodar o script — é idempotente:
+Depois de criar, **sincronizar a ponte pro Codex enxergar a skill nova** (symlink/junction refletem
+sozinhos; só cópia precisa re-sincronizar de fato). Rodar o script — é idempotente:
 
 ```bash
-bash scripts/sync-ponte.sh        # Mac/Linux ou Git Bash
+bash scripts/sync-ponte.sh        # Mac/Linux — nunca no Windows, mesmo em Git Bash
 ```
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1   # Windows
+powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1   # Windows — sempre este
 ```
 
 Depois, confirmar:

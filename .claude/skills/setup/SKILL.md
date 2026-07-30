@@ -20,18 +20,24 @@ independente de qual agente está rodando agora — o aluno pode abrir no outro 
 script de sincronização, que já resolve symlink (Mac/Linux) ou junction/cópia (Windows):
 
 ```bash
-# Mac / Linux (ou Git Bash no Windows)
+# Mac / Linux — nunca no Windows, mesmo em Git Bash (ln -s falha silenciosamente sem
+# privilégio elevado e cai pra cópia, mesmo reportando "symlink criado")
 bash scripts/sync-ponte.sh
 ```
 ```powershell
-# Windows (PowerShell)
+# Windows — sempre este, mesmo se a sessão está rodando em Git Bash. É o único que
+# tenta junction (não exige privilégio nem Developer Mode; link de verdade, sem
+# precisar re-sincronizar depois)
 powershell -ExecutionPolicy Bypass -File scripts\sync-ponte.ps1
 ```
 
-Detectar o SO pelo ambiente (`uname` responde no Mac/Linux; no Windows use o `.ps1`). O script é
-idempotente: no Mac/Linux cria um symlink (que reflete `.claude/skills` sozinho pra sempre); no
-Windows cria junction, e se não der, cópia. Quando a ponte é cópia, skill nova precisa re-sincronizar
-— o `/mapear` e o `/atualizar` rodam esse mesmo script no fim.
+Detectar o SO pelo ambiente: se `uname` responder `Linux` ou `Darwin`, usar o `.sh`; em
+qualquer cenário Windows (incluindo Git Bash, onde `uname` responde `MINGW*`/`MSYS*`),
+usar sempre o `.ps1` via `powershell -ExecutionPolicy Bypass -File`. O script é idempotente:
+no Mac/Linux cria um symlink (que reflete `.claude/skills` sozinho pra sempre); no Windows
+cria junction (idem, sem precisar re-sincronizar), e só cai pra cópia se nem isso for possível.
+Quando a ponte é cópia, skill nova precisa re-sincronizar — o `/mapear` e o `/atualizar`
+rodam esse mesmo script no fim.
 
 **Validar (opcional, se der):** no Codex, `codex debug prompt-input` mostra a tabela de skill roots;
 se `.claude/skills` aparecer lá, a ponte funcionou. No Claude Code as skills já aparecem no `/`.
