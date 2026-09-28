@@ -2,8 +2,10 @@
 # Trava de build do kit RatosOS. Não conserta nada: só diz o que está fora da regra.
 # Roda na raiz do kit (ou de uma instalação). Mac, Linux e Git Bash; só precisa de grep.
 #   bash sistema/scripts/conferir-kit.sh
+#   bash <kit>/sistema/scripts/conferir-kit.sh   (de dentro de uma instalação: confere ela)
 set -u
-cd "$(dirname "$0")/../.." || exit 1
+# Pasta atual com AGENTS.md é uma instalação: confere ela. Senão, o kit onde o script mora.
+[ -f AGENTS.md ] || cd "$(dirname "$0")/../.." || exit 1
 erros=0; avisos=0
 falha(){ echo "  ✗ $1"; erros=$((erros+1)); }
 aviso(){ echo "  · $1"; avisos=$((avisos+1)); }
@@ -39,6 +41,16 @@ done
 [ -d _contexto/pessoas ] && aviso "_contexto/pessoas/ existe no kit: ela não nasce, aparece no 1º arquivo de pessoa"
 [ -d dados ] && falha "dados/ ainda existe (morreu na 2.0)"
 [ -f tarefas.md ] && falha "tarefas.md no kit (pendência mora no agora.md)"
+
+# 3b. ponte do Codex: script sobe dois níveis, nada sobrando em sistema/, e a da raiz abre
+grep -q '/\.\./\.\.' sistema/scripts/sync-ponte.sh 2>/dev/null || falha "sync-ponte.sh acha a raiz um nível só acima (script da 1.0 em sistema/scripts/): copiar o do kit"
+grep -q 'Split-Path -Parent (Split-Path -Parent' sistema/scripts/sync-ponte.ps1 2>/dev/null || falha "sync-ponte.ps1 acha a raiz um nível só acima (script da 1.0 em sistema\\scripts\\): copiar o do kit"
+[ -e sistema/.agents ] || [ -L sistema/.agents ] && falha "sistema/.agents existe: ponte criada no lugar errado, apagar"
+if [ -L .agents/skills ] || [ -e .agents/skills ]; then
+  [ -d .agents/skills ] || falha ".agents/skills na raiz existe mas não abre (atalho quebrado): rodar a ponte de novo"
+else
+  aviso ".agents/skills na raiz não existe: o Codex não enxerga as skills até a ponte rodar"
+fi
 
 # 4. arquivo de _contexto/ e _memoria/ diz quem o alimenta
 for f in _contexto/*.md _contexto/marca/design-guide.md _memoria/decisoes.md; do
