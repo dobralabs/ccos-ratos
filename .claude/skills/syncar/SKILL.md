@@ -25,7 +25,26 @@ arquivo; o trabalho está no computador.
 git status --short 2>&1
 git remote get-url origin 2>/dev/null
 cat .origem 2>/dev/null
+ls .gitignore 2>&1
+ls _memoria/recados/*auto-sync-parado* 2>/dev/null
 ```
+
+**Sem `.gitignore` na raiz, nada sobe.** É ele que segura `.env`, vídeo e zip no computador. O
+modelo mora em `sistema/templates/gitignore.txt`: copiar pra `.gitignore` e contar em uma linha
+(*"faltava a trava que impede senha e vídeo de subirem; coloquei"*). Se a pasta já tem git e já
+enviou antes, conferir o que subiu e agora ficaria de fora:
+
+```bash
+git ls-files -ci --exclude-standard
+```
+
+Tem coisa: mostrar a lista e, com o sim, tirar do GitHub **sem apagar do computador**
+(`git rm --cached <arquivo>`, e segue pro Fluxo B). Se na lista tem `.env` ou arquivo com chave,
+dizer com todas as letras: *"essa chave já esteve no GitHub. Tirar de lá não apaga do histórico:
+troque ela no serviço (gere uma nova) e ponha a nova só no `.env`."*
+
+Tem recado `auto-sync-parado`: é o envio automático pedindo ajuda. Seguir o **Fluxo E** antes de
+qualquer outro.
 
 ## Fluxo 0 · a pasta nunca foi preparada pra salvar
 
@@ -137,6 +156,25 @@ outro lugar: ..."*.
 | qualquer outra | "Não consegui subir, e essa eu não sei resolver de cabeça. Seu trabalho está seguro no computador. Quer que eu investigue?" |
 
 O erro cru só aparece se o usuário pedir.
+
+## Fluxo E · o envio automático parou
+
+Existe quando este computador tem o envio automático ligado (`sistema/scripts/auto-sync.sh`, ver a
+linha dele em `_contexto/automacoes.md`) e ele deixou um recado `AAAA-MM-DD-<origem>-auto-sync-parado.md`.
+O recado diz o motivo em uma frase; o detalhe está nas últimas linhas de `.auto-sync.log`.
+
+| o recado diz | o que fazer |
+|---|---|
+| o mesmo arquivo mudou aqui e no GitHub | é o passo 2 do Fluxo B: o evento supervisionado. Se `git status` mostra arquivo em conflito, as mudanças daqui estão guardadas (`git stash list`); juntar com o sim, do mesmo jeito |
+| tem arquivo esperando decidir entre duas versões | idem: juntar com o sim. Nunca descartar um lado |
+| achei cara de chave ou senha em ... | mostrar o arquivo e a linha, sem o valor; mover a chave pro `.env` |
+| arquivo pesado demais | acrescentar o caminho no `.gitignore` com o sim |
+| o GitHub recusou o acesso | Fluxo D, linha de autenticação |
+| o git respondeu algo que não sei resolver | ler o `.auto-sync.log`, explicar em uma frase, perguntar se investiga |
+
+Resolveu: rodar o Fluxo B normalmente. O próprio envio automático apaga o recado na próxima rodada
+que passar; se o usuário quiser, apague agora. O envio automático nunca junta arquivo nem força
+nada: por isso ele para e chama você.
 
 ## Regras
 

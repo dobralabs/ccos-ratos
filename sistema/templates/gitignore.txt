@@ -1,0 +1,65 @@
+# Fail-closed: nega tudo, libera só o que o sistema precisa.
+# Extensão nova (vídeo, zip, build) nasce bloqueada em vez de virar furo.
+# E o seu trabalho (clientes/, propostas/, projetos/...) SOBE, ao contrário da 1.0.
+*
+!*/
+!.gitkeep
+!.gitignore
+
+# arquivo sem extensão que o kit pode precisar (o `*` acima come qualquer um)
+!.ratosos
+!LICENSE
+
+# texto e estrutura
+!*.md
+!*.html
+!*.css
+!*.txt
+!*.csv
+
+# material de projeto (transcrição, proposta recebida, contrato). Vídeo e áudio ficam de fora
+!*.pdf
+
+# config
+!*.json
+!*.yaml
+!*.yml
+!*.toml
+
+# script de skill
+!*.py
+!*.js
+!*.sh
+!*.ps1
+
+# imagem (marca, carrossel, slide)
+!*.png
+!*.jpg
+!*.jpeg
+!*.svg
+!*.webp
+
+# segredo: nunca, mesmo com a liberação acima
+.env
+.env.*
+!.env.example
+
+# identidade desta máquina (nome da origem, criado pelo /setup): cada computador tem a sua
+.origem
+
+# config local do agente nesta máquina (permissões, caminhos): não viaja
+.claude/settings.local.json
+
+# pasta que o !*/ reabriria por acidente: sem isso, o !*.js libera node_modules inteiro
+node_modules/
+__pycache__/
+.venv/
+dist/
+build/
+.DS_Store
+
+# ponte pro Codex enxergar as skills: cada máquina cria a sua, nunca vai pro git
+.agents/
+
+# config de skill de ads: costuma ter só ID, mas é onde chave costuma escorregar
+contas.yaml

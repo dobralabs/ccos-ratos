@@ -70,11 +70,13 @@ for s in .claude/skills/*/SKILL.md; do
 done
 
 # 7. .gitignore: o trabalho sobe, o segredo não
+[ -f .gitignore ] || falha "falta o .gitignore na raiz: sem ele o /syncar sobe .env, vídeo e zip (modelo em sistema/templates/gitignore.txt)"
+[ -f sistema/templates/gitignore.txt ] || falha "falta sistema/templates/gitignore.txt (o modelo do .gitignore pra quem perdeu o seu)"
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  for deve_subir in clientes/x/proposta.html _memoria/diario/2026-01-01.md .claude/skills/minha/SKILL.md .ratosos sistema/scripts/sync-ponte.sh clientes/x/contrato.pdf; do
+  for deve_subir in clientes/x/proposta.html _memoria/diario/2026-01-01.md .claude/skills/minha/SKILL.md .ratosos sistema/scripts/sync-ponte.sh sistema/scripts/auto-sync.sh sistema/templates/gitignore.txt clientes/x/contrato.pdf; do
     git check-ignore -q "$deve_subir" && falha ".gitignore bloqueia coisa que devia subir: $deve_subir"
   done
-  for nao_sobe in .env .env.local .origem .claude/settings.local.json video.mp4 backup.zip node_modules/x.js; do
+  for nao_sobe in .env .env.local .origem .claude/settings.local.json video.mp4 backup.zip node_modules/x.js .auto-sync.log; do
     git check-ignore -q "$nao_sobe" || falha ".gitignore deixa subir coisa que não devia: $nao_sobe"
   done
 fi
